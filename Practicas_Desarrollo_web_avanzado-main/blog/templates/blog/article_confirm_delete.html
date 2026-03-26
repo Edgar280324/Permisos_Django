@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Eliminar articulo</h2>
+<p>Estas seguro de eliminar "{{ article.title }}"?</p>
+
+<form method="post">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-danger">Si, eliminar</button>
+  <a href="{% url 'article_list' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

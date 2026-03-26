@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="mb-3">Articulos</h2>
+
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-success" role="alert">{{ message }}</div>
+  {% endfor %}
+{% endif %}
+
+{% if perms.blog.add_article %}
+  <a href="{% url 'article_create' %}" class="btn btn-primary mb-3">Nuevo articulo</a>
+{% endif %}
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Titulo</th>
+      <th>Autor</th>
+      <th>Publicado</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for article in articles %}
+      <tr>
+        <td>{{ article.title }}</td>
+        <td>{{ article.author.username }}</td>
+        <td>{% if article.published %}Si{% else %}No{% endif %}</td>
+        <td>
+          {% if perms.blog.delete_article %}
+            <a href="{% url 'article_delete' article.pk %}" class="btn btn-sm btn-danger">Eliminar</a>
+          {% endif %}
+
+          {% if perms.blog.publish_article and not article.published %}
+            <a href="{% url 'article_publish' article.pk %}" class="btn btn-sm btn-success">Publicar</a>
+          {% endif %}
+        </td>
+      </tr>
+    {% empty %}
+      <tr>
+        <td colspan="4">No hay articulos todavia.</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
